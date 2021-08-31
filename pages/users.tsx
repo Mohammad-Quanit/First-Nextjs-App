@@ -2,8 +2,7 @@ import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 
 import React from 'react';
-
-interface IUser {
+export interface IUser {
   id: number;
   name: string;
   username: string;
@@ -23,16 +22,14 @@ interface IUser {
 const Users: NextPage = ({ users }: any) => {
   return (
     <main>
-      <h1>Fetching Users</h1>
+      <h1>Fetched Users</h1>
       <ul>
         {users.map((user: IUser) => (
-          <Link
-            key={user.id}
-            href={`/user/${encodeURIComponent(user.id)}`}
-            passHref
-          >
-            <li>{user.name}</li>
-          </Link>
+          <div key={user.id} style={{ padding: '10px' }}>
+            <Link href={`/user/${encodeURIComponent(user.id)}`} passHref>
+              <li>{user.name}</li>
+            </Link>
+          </div>
         ))}
       </ul>
     </main>
@@ -40,7 +37,7 @@ const Users: NextPage = ({ users }: any) => {
 };
 
 // This function gets called at build time
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   // Call an external API endpoint to get users
   const res = await fetch('https://jsonplaceholder.typicode.com/users');
   const users = await res.json();
@@ -53,6 +50,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
   };
 };
-
 
 export default Users;
